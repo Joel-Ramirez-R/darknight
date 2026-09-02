@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Darknigth</title>
+
+
+    <style>
+
+
+        /* ==========================================
+           CONFIGURACIÓN GENERAL
+        ========================================== */
+
+        html,
+        body {
+
+            margin: 0;
+
+            height: 100%;
+
+            width: 100%;
+
+            background:
+                #05070d;
+
+        }
+
+
+        #map {
+
+            height: 100%;
+
+            width: 100%;
+
+        }
+
+
+        /* ==========================================
+           TOOLTIP DARKNIGTH
+        ========================================== */
+
+        .leaflet-tooltip {
+
+            background:
+                transparent !important;
+
+            border:
+                none !important;
+
+            box-shadow:
+                none !important;
+
+            padding:
+                0 !important;
+
+        }
+
+
+        .leaflet-tooltip::before {
+
+            display:
+                none !important;
+
+        }
+
+
+        /* ==========================================
+           TARJETA
+        ========================================== */
+
+        .tooltip-card {
+
+            width:
+                230px;
+
+            padding:
+                15px;
+
+            border-radius:
+                14px;
+
+            background:
+                rgba(
+                    8,
+                    12,
+                    24,
+                    0.96
+                );
+
+            color:
+                white;
+
+            border:
+                1px solid
+                rgba(
+                    255,
+                    255,
+                    255,
+                    0.10
+                );
+
+            box-shadow:
+                0 8px 30px
+                rgba(
+                    0,
+                    0,
+                    0,
+                    0.55
+                );
+
+            backdrop-filter:
+                blur(12px);
+
+            font-family:
+                Arial,
+                sans-serif;
+
+        }
+
+
+        /* ==========================================
+           TITULO
+        ========================================== */
+
+        .tooltip-title {
+
+            font-size:
+                15px;
+
+            font-weight:
+                700;
+
+            letter-spacing:
+                0.3px;
+
+        }
+
+
+        /* ==========================================
+           DIVISOR
+        ========================================== */
+
+        .tooltip-divider {
+
+            height:
+                1px;
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    0.12
+                );
+
+            margin:
+                9px 0 12px 0;
+
+        }
+
+
+        /* ==========================================
+           LABEL
+        ========================================== */
+
+        .tooltip-label {
+
+            font-size:
+                10px;
+
+            color:
+                #9da6b8;
+
+            margin-top:
+                10px;
+
+            margin-bottom:
+                4px;
+
+            text-transform:
+                uppercase;
+
+            letter-spacing:
+                0.6px;
+
+        }
+
+
+        /* ==========================================
+           FILA DEL VALOR
+        ========================================== */
+
+        .tooltip-value-row {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap:
+                9px;
+
+        }
+
+
+        /* ==========================================
+           PUNTO DE COLOR
+        ========================================== */
+
+        .brightness-dot {
+
+            width:
+                12px;
+
+            height:
+                12px;
+
+            min-width:
+                12px;
+
+            border-radius:
+                50%;
+
+            display:
+                inline-block;
+
+        }
+
+
+        /* ==========================================
+           VALOR SKY BRIGHTNESS
+        ========================================== */
+
+        .tooltip-value {
+
+            font-size:
+                23px;
+
+            font-weight:
+                700;
+
+            line-height:
+                1.1;
+
+        }
+
+
+        /* ==========================================
+           GRADIENTE
+        ========================================== */
+
+        .tooltip-gradient {
+
+            height:
+                7px;
+
+            width:
+                100%;
+
+            border-radius:
+                5px;
+
+            margin-top:
+                11px;
+
+            background:
+                linear-gradient(
+                    to right,
+                    #2b1055,
+                    #3155a6,
+                    #20b96b,
+                    #d8df32,
+                    #ff9d00,
+                    #ff2200
+                );
+
+        }
+
+
+        /* ==========================================
+           ETIQUETAS DEL GRADIENTE
+        ========================================== */
+
+        .tooltip-scale {
+
+            display:
+                flex;
+
+            justify-content:
+                space-between;
+
+            font-size:
+                9px;
+
+            color:
+                #8e96a5;
+
+            margin-top:
+                4px;
+
+        }
+
+
+        /* ==========================================
+           NIVEL DE INTENSIDAD
+        ========================================== */
+
+        .tooltip-level {
+
+            font-size:
+                10px;
+
+            color:
+                #8e96a5;
+
+            margin-top:
+                8px;
+
+        }
+
+
+        .tooltip-level strong {
+
+            color:
+                white;
+
+        }
+
+
+
+
+        /* ==========================================
+           COORDENADAS
+        ========================================== */
+
+        .tooltip-coordinates {
+
+            font-size:
+                12px;
+
+            color:
+                #d5d9e2;
+
+            line-height:
+                1.4;
+
+        }
+
+
+        /* ==========================================
+           FOOTER
+        ========================================== */
+
+        .tooltip-footer {
+
+            margin-top:
+                12px;
+
+            padding-top:
+                9px;
+
+            border-top:
+                1px solid
+                rgba(
+                    255,
+                    255,
+                    255,
+                    0.08
+                );
+
+            font-size:
+                9px;
+
+            line-height:
+                1.4;
+
+            color:
+                #8e96a8;
+
+        }
+
+
+        /* ==========================================
+           LEYENDA DEL MAPA
+        ========================================== */
+
+        .darknigth-legend {
+
+            background:
+                rgba(
+                    5,
+                    7,
+                    13,
+                    0.92
+                );
+
+            color:
+                white;
+
+            padding:
+                14px;
+
+            border-radius:
+                10px;
+
+            width:
+                220px;
+
+            box-shadow:
+                0 4px 20px
+                rgba(
+                    0,
+                    0,
+                    0,
+                    0.5
+                );
+
+            backdrop-filter:
+                blur(8px);
+
+            font-family:
+                Arial,
+                sans-serif;
+
+        }
+
+
+        /* ==========================================
+           TITULO LEYENDA
+        ========================================== */
+
+        .legend-title {
+
+            font-size:
+                16px;
+
+            font-weight:
+                bold;
+
+            margin-bottom:
+                10px;
+
+        }
+
+
+        /* ==========================================
+           GRADIENTE LEYENDA
+        ========================================== */
+
+        .legend-gradient {
+
+            height:
+                12px;
+
+            border-radius:
+                8px;
+
+            background:
+                linear-gradient(
+                    to right,
+                    #2b1055,
+                    #3155a6,
+                    #20b96b,
+                    #d8df32,
+                    #ff9d00,
+                    #ff2200
+                );
+
+        }
+
+
+        /* ==========================================
+           LABELS LEYENDA
+        ========================================== */
+
+        .legend-labels {
+
+            display:
+                flex;
+
+            justify-content:
+                space-between;
+
+            font-size:
+                11px;
+
+            margin-top:
+                5px;
+
+        }
+
+
+        /* ==========================================
+           INFORMACIÓN LEYENDA
+        ========================================== */
+
+        .legend-info {
+
+            font-size:
+                11px;
+
+            line-height:
+                1.4;
+
+            color:
+                #c8c8c8;
+
+            margin-top:
+                10px;
+
+        }
+
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- ==========================================
+         MAPA
+    ========================================== -->
+
+    <div id="map"></div>
+
+
+    <!-- ==========================================
+         JAVASCRIPT
+    ========================================== -->
+
+    <script
+        type="module"
+        src="/src/main.js"
+    ></script>
+
+
+</body>
+
+</html>
