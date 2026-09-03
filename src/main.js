@@ -30,7 +30,7 @@ const baseMap = L.tileLayer(
     }
 );
 
-//baseMap.addTo(map);
+baseMap.addTo(map);
 
 
 // ==========================================
