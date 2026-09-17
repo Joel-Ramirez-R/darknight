@@ -22,6 +22,8 @@ const map = L.map("map").setView(
 // 2. MAPA BASE OSCURO
 // ==========================================
 
+
+
 const baseMap = L.tileLayer(
     "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}",
     {
@@ -703,6 +705,7 @@ const tooltip =
 // 16. TOOLTIP CON EL CURSOR
 // ==========================================
 
+
 map.on(
     "mousemove",
     function(event) {
@@ -881,6 +884,29 @@ map.on(
     }
 );
 
+// 📱 CLICK / TOUCH EN CELULAR
+
+map.on(
+    "click",
+    function(event) {
+
+        const point =
+            findNearestPoint(
+                event.latlng.lat,
+                event.latlng.lng
+            );
+
+        if (!point) {
+            return;
+        }
+
+        // Ejecuta exactamente la misma lógica del tooltip
+        map.fire("mousemove", {
+            latlng: event.latlng
+        });
+
+    }
+);
 
 // ==========================================
 // 17. OCULTAR TOOLTIP AL SALIR
